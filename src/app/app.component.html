@@ -1,14 +1,17 @@
-<h1>JS Console</h1>
-<div>
-  <textarea
-    #js
-    rows="20"
-  ></textarea>
-</div>
-<div>
+<h1 class="title">JS Console</h1>
+<textarea
+  class="input"
+  #js
+  rows="20"
+></textarea>
+<div class="submit">
   <button
+    class="submit__button"
     type="button"
     (click)="run(js.value)"
   >RUN</button>
 </div>
-<pre [ngStyle]="{ color: isError ? 'red' : null }"><code>{{ consoleOutput }}</code></pre>
+<pre
+  class="output"
+  [class.output--has-error]="isError"
+><code>{{ consoleOutput }}</code></pre>
