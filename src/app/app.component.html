@@ -1,0 +1,14 @@
+<h1>JS Console</h1>
+<div>
+  <textarea
+    #js
+    rows="20"
+  ></textarea>
+</div>
+<div>
+  <button
+    type="button"
+    (click)="run(js.value)"
+  >RUN</button>
+</div>
+<pre [ngStyle]="{ color: isError ? 'red' : null }"><code>{{ consoleOutput }}</code></pre>
