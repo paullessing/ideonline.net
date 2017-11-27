@@ -42,16 +42,19 @@ export class AppComponent {
       return;
     }
 
-    const consoleCalls = evalToConsole(code);
+    const evalResult = evalToConsole(code);
+    // console.log(evalResult);
+    // TODO hard fail when last statement in code is return
 
-    if (consoleCalls.hasOwnProperty('error')) {
-      this.consoleOutput = (consoleCalls as { error: any }).error.toString();
+    if (evalResult.error) {
+      this.consoleOutput = evalResult.error.toString();
       this.isError = true;
-    } else if ((consoleCalls as ConsoleCall[]).length) {
-      this.consoleOutput = (consoleCalls as ConsoleCall[])
+    } else if (evalResult.consoleCalls.length || typeof evalResult.result !== 'undefined') {
+      this.consoleOutput = evalResult.consoleCalls
         .map((call) => [call.method.toUpperCase(), ...call.args
-          .map((arg: any) => typeof arg === 'string' ? arg : JSON.stringify(arg))
+          .map((arg: any) => this.stringify(arg))
         ].join(' '))
+        .concat(typeof evalResult.result !== 'undefined' ? [this.stringify(evalResult.result)] : [])
         .join('\n');
     } else {
       this.consoleOutput = 'No output';
@@ -73,5 +76,13 @@ export class AppComponent {
     textarea.value = `${textPre}${text}${textPost}`;
     textarea.setSelectionRange(selectionStart, selectionStart);
     textarea.focus();
+  }
+
+  private stringify(value: any): string {
+    if (typeof value === 'string') {
+      return value;
+    } else {
+      return JSON.stringify(value);
+    }
   }
 }

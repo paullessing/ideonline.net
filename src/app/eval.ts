@@ -2,6 +2,12 @@
 // var globals = Object.getOwnPropertyNames(this);
 // console.log(globals);
 
+export interface EvalResult {
+  error?: any;
+  consoleCalls: ConsoleCall[];
+  result?: any;
+}
+
 export interface ConsoleCall {
   method: 'log' | 'info' | 'debug' | 'warn' | 'error';
   args: any[];
@@ -28,7 +34,7 @@ export function safeEval(): (op: string) => any {
   };
 }
 
-export function evalToConsole(code: string): ConsoleCall[] | { error: any } {
+export function evalToConsole(code: string): EvalResult {
   // tslint:disable-next-line:no-unused no-shadowed-variable no-var-keyword prefer-const no-unnecessary-initializer
   const wrappedCode = `(function() {
       var code = undefined;
@@ -70,14 +76,21 @@ export function evalToConsole(code: string): ConsoleCall[] | { error: any } {
           console._history.push({ method: 'debug', args: args });
         }
       };
-      ${code};
-      return console._history;
+      var returnValue = ${code};
+      return [returnValue, console._history];
     })()`;
 
   try {
-    return safeEval()(wrappedCode) as ConsoleCall[];
-  } catch (e) {
-    return { error: e };
+    const [result, consoleCalls] = safeEval()(wrappedCode) as [any, ConsoleCall[]];
+    return {
+      result,
+      consoleCalls
+    };
+  } catch (error) {
+    return {
+      error,
+      consoleCalls: []
+    };
   }
 }
 
