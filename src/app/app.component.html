@@ -4,6 +4,15 @@
   #js
   rows="20"
 ></textarea>
+<div
+  class="keyboard"
+>
+  <button
+    *ngFor="let key of keys"
+    class="keyboard__key"
+    (click)="onKeypress(key)"
+  >{{ key }}</button>
+</div>
 <div class="submit">
   <button
     class="submit__button"

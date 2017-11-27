@@ -28,7 +28,7 @@ export function safeEval(): (op: string) => any {
   };
 }
 
-export function evalConsole(code: string): ConsoleCall[] | { error: any } {
+export function evalToConsole(code: string): ConsoleCall[] | { error: any } {
   // tslint:disable-next-line:no-unused no-shadowed-variable no-var-keyword prefer-const no-unnecessary-initializer
   const wrappedCode = `(function() {
       var code = undefined;

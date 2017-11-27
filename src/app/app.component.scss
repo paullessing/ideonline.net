@@ -25,6 +25,38 @@
   resize: none;
 }
 
+.keyboard {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0.5rem 1rem;
+  overflow-x: auto;
+
+  &__key {
+    font-family: monospace;
+    box-sizing: content-box;
+    border: 0;
+    background: #636363;
+    color: #e3e3e3;
+    font-size: 1.3rem;
+    min-width: 1.3rem;
+    padding: 0.5rem;
+    outline: none;
+    margin-right: 0.2rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      background-color: #838383;
+    }
+    &:active {
+      background-color: #939393;
+    }
+  }
+}
+
 .submit {
   padding: 1rem;
   text-align: center;
