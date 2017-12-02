@@ -43,9 +43,6 @@ export class AppComponent {
     }
 
     const evalResult = evalToConsole(code);
-    // console.log(evalResult);
-    // TODO hard fail when last statement in code is return
-
     if (evalResult.error) {
       this.consoleOutput = evalResult.error.toString();
       this.isError = true;
@@ -54,7 +51,7 @@ export class AppComponent {
         .map((call) => [call.method.toUpperCase(), ...call.args
           .map((arg: any) => this.stringify(arg))
         ].join(' '))
-        .concat(typeof evalResult.result !== 'undefined' ? [this.stringify(evalResult.result)] : [])
+        .concat(typeof evalResult.result !== 'undefined' ? ['RETURN ' + this.stringify(evalResult.result)] : [])
         .join('\n');
     } else {
       this.consoleOutput = 'No output';

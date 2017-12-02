@@ -76,7 +76,7 @@ export function evalToConsole(code: string): EvalResult {
           console._history.push({ method: 'debug', args: args });
         }
       };
-      var returnValue = ${code};
+      var returnValue = (function() { ${code} })();
       return [returnValue, console._history];
     })()`;
 
