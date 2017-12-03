@@ -185,6 +185,10 @@
   dependencies:
     "@angular-devkit/core" "0.0.21"
 
+"@types/downloadjs@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@types/downloadjs/-/downloadjs-1.4.0.tgz#d356ccdbea1c3622f233aebff7e58cc6598309ed"
+
 "@types/jasmine@*":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.2.tgz#6ae4d8740c0da5d5a627df725b4eed71b8e36668"
@@ -1624,6 +1628,10 @@ domutils@1.5.1:
   dependencies:
     dom-serializer "0"
     domelementtype "1"
+
+downloadjs@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
 
 duplexify@^3.1.2, duplexify@^3.4.2:
   version "3.5.1"

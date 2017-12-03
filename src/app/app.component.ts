@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { evalToConsole } from './eval';
+import * as download from 'downloadjs';
 
 export const KEYS = {
   ';':  ';',
@@ -114,6 +115,14 @@ export class AppComponent implements OnInit {
     const stored = localStorage.getItem('js');
     if (stored) {
       this.jsTextArea.nativeElement.value = stored;
+    }
+  }
+
+  public download(): void {
+    const text = this.textarea.value;
+    const filename = window.prompt('Enter filename:');
+    if (filename) {
+      download(text, filename, 'application/javascript');
     }
   }
 
