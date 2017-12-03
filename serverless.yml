@@ -1,0 +1,53 @@
+service: js-console
+
+plugins:
+  - serverless-hooks-plugin
+  - serverless-apig-s3
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: eu-west-2
+  memorySize: 128
+#  iamRoleStatements:
+#    - Effect: Allow
+#      Action:
+#        - dynamodb:DescribeTable
+#        - dynamodb:Query
+#        - dynamodb:Scan
+#        - dynamodb:GetItem
+#        - dynamodb:PutItem
+#        - dynamodb:BatchWriteItem
+#        - dynamodb:UpdateItem
+#        - dynamodb:DeleteItem
+#      Resource: arn:aws:dynamodb:eu-west-2:*:*
+
+functions:
+  defaultHandler:
+    handler: handler.handler
+    events:
+      - http:
+          path: handle
+          method: GET
+
+#resources:
+#  Resources:
+
+# you can add packaging information here
+package:
+  include:
+    - handler.js
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+custom:
+  hooks:
+    before:package:createDeploymentArtifacts:
+      - node_modules/.bin/ng build --base-href "/dev/" --output-path ./dist
+  apigs3:
+    dist: dist             # path within service to find content to upload (default: client/dist)
+    dotFiles: false        # include files beginning with a dot in resources and uploads (default: false)
+    topFiles: true         # create routes for top-level files in dist folder (default: false)
+    resourceName: assets   # route path for static assets (default: assets)
+    resourcePath: /assets   # path prefix for assets in s3 bucket (default: '')
