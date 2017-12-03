@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
 
   // TODO extract textarea to separate component
   // TODO tab and untab buttons, working with multi select
+  // TODO navigation keys (up down left right)
 
   private get textarea(): HTMLTextAreaElement {
     return this.jsTextArea.nativeElement;
