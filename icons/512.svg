@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 512.00003 512.00003"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="512.svg"
+   inkscape:export-filename="/home/paul/workspace/js-console/icons/512.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#868686"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="640.36168"
+     inkscape:cy="14.310064"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     units="px"
+     inkscape:snap-nodes="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:window-width="1551"
+     inkscape:window-height="882"
+     inkscape:window-x="49"
+     inkscape:window-y="18"
+     inkscape:window-maximized="1"
+     showborder="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4136"
+       empspacing="10" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.3622)">
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#454545;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:5.22560024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect4138"
+       width="506.77441"
+       height="506.77444"
+       x="2.6128001"
+       y="542.97498"
+       ry="82.684196" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot4156"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:103.98651123px;line-height:125%;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:-0.00572082px;word-spacing:0px;fill:#b1b1b1;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(1.748,0,0,1.7480003,94.813536,-982.5698)"><flowRegion
+         id="flowRegion4158"><rect
+           id="rect4160"
+           width="207.97302"
+           height="207.97302"
+           x="14.176395"
+           y="875.46423"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:103.98651123px;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:-0.00572082px;fill:#b1b1b1;fill-opacity:1" /></flowRegion><flowPara
+         id="flowPara4162"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:103.98651123px;font-family:'Ubuntu Mono';-inkscape-font-specification:'Ubuntu Mono';letter-spacing:-0.00572082px;fill:#d5d5d5;fill-opacity:1">JS<flowSpan
+   style="letter-spacing:-8.58123493px;fill:#d5d5d5;fill-opacity:1"
+   id="flowSpan7421">$</flowSpan></flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot7423"
+       style="font-style:normal;font-weight:normal;font-size:84.34436798px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="translate(-107.38884,47.817139)"><flowRegion
+         id="flowRegion7425"><rect
+           id="rect7427"
+           width="1012.1324"
+           height="548.2384"
+           x="-142.7187"
+           y="741.07385" /></flowRegion><flowPara
+         id="flowPara7429"
+         style="text-align:center;text-anchor:middle;fill:#b1b1b1;fill-opacity:1">Run JS</flowPara><flowPara
+         id="flowPara7431"
+         style="text-align:center;text-anchor:middle;fill:#b1b1b1;fill-opacity:1">on the go</flowPara></flowRoot>  </g>
+</svg>

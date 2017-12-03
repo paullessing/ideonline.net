@@ -16,6 +16,7 @@
 </div>
 <h1 class="title">JS Console</h1>
 <textarea
+  aria-label="JS Code"
   class="input"
   #js
   rows="20"
@@ -35,7 +36,7 @@
     class="submit__button"
     type="button"
     (click)="run(js.value)"
-  >RUN</button>
+  >Run</button>
 </div>
 <pre
   class="output"
