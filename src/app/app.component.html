@@ -1,8 +1,20 @@
+<div class="header">
+  <button
+    class="header__button"
+    (click)="save(js.value)"
+  >Save</button>
+  <button
+    class="header__button"
+    (click)="load()"
+    [disabled]="!hasStoredCode"
+  >Load</button>
+</div>
 <h1 class="title">JS Console</h1>
 <textarea
   class="input"
   #js
   rows="20"
+  (keydown)="onTextareaKeydown($event)"
 ></textarea>
 <div
   class="keyboard"

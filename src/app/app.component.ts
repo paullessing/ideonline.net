@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ConsoleCall, evalToConsole, printConsoleCalls } from './eval';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { evalToConsole } from './eval';
 
 export const KEYS = [
   ';',
@@ -24,14 +24,23 @@ export const KEYS = [
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public isError: boolean;
   public consoleOutput: string;
+  public hasStoredCode: boolean;
 
   public keys: string[] = KEYS;
 
   @ViewChild('js')
   public jsTextArea: ElementRef;
+
+  private get textarea(): HTMLTextAreaElement {
+    return this.jsTextArea.nativeElement;
+  }
+
+  public ngOnInit(): void {
+    this.hasStoredCode = !!localStorage.getItem('js');
+  }
 
   public run(code: string): void {
     this.isError = false;
@@ -59,20 +68,66 @@ export class AppComponent {
   }
 
   public onKeypress(key: string): void {
-    const textarea = this.jsTextArea.nativeElement as HTMLTextAreaElement;
-    this.insertText(textarea, key);
+    this.insertText(key);
 
     // TODO longpress for special alternatives? e.g. '->" or block for loop stuff
   }
 
-  private insertText(textarea: HTMLTextAreaElement, text: string): void {
+  public onTextareaKeydown($event: KeyboardEvent): void {
+    if ($event.key === 'Enter') {
+      $event.preventDefault();
+      const caretPos = this.textarea.selectionStart;
+      const text = this.textarea.value.substring(0, caretPos);
+      const lines = text.split(/$\n/gm);
+      const lastLine = lines[lines.length - 1];
+      const indent = lastLine.match(/^(\s*)/)[0];
+      const isLastCharacterOpening = lastLine.match(/([{(\[])\s*$/);
+      let textToInsertBeforeCaret = '\n' + indent;
+      let textToInsertAfterCaret = '';
+      if (isLastCharacterOpening) {
+        textToInsertBeforeCaret += '  ';
+        textToInsertAfterCaret += '\n' + indent + this.getClosingBrace(isLastCharacterOpening[1]) + '\n';
+      }
+      const newCaretPos = caretPos + textToInsertBeforeCaret.length;
+      this.insertText(textToInsertBeforeCaret + textToInsertAfterCaret, newCaretPos);
+
+      // TODO could do something cleverer here like other IDEs
+    }
+  }
+
+  public save(text: string): void {
+    localStorage.setItem('js', text);
+    this.hasStoredCode = !!text;
+  }
+
+  public load(): void {
+    const stored = localStorage.getItem('js');
+    if (stored) {
+      this.jsTextArea.nativeElement.value = stored;
+    }
+  }
+
+  private getClosingBrace(opening?: string): string {
+    return {
+      '{': '}',
+      '[': ']',
+      '(': ')'
+    }[opening] || '';
+  }
+
+  private insertText(text: string, caretPos?: number): void {
+    const textarea = this.textarea;
     const oldText = textarea.value;
     const textPre = oldText.substring(0, textarea.selectionStart);
     const textPost = oldText.substring(textarea.selectionEnd);
     const selectionStart = textarea.selectionStart + 1;
     textarea.value = `${textPre}${text}${textPost}`;
-    textarea.setSelectionRange(selectionStart, selectionStart);
-    textarea.focus();
+    if (typeof caretPos !== 'undefined') {
+      textarea.setSelectionRange(caretPos, caretPos);
+    } else {
+      textarea.setSelectionRange(selectionStart, selectionStart);
+      textarea.focus();
+    }
   }
 
   private stringify(value: any): string {
