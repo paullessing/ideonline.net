@@ -1,4 +1,4 @@
-# JS Console
+# IDEOnline.net
 This project is intended to provide a browser-based JS evaluation environment to allow on-the-go running of simple scripts.
 
 ## Initial work
