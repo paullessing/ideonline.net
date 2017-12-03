@@ -1,23 +1,29 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { evalToConsole } from './eval';
 
-export const KEYS = [
-  ';',
-  ':',
-  '{',
-  '}',
-  '\'',
-  '`',
-  '|',
-  '[',
-  ']',
-  '$',
-  '*',
-  '/',
-  '\\',
-  '<',
-  '>',
-];
+export const KEYS = {
+  ';':  ';',
+  ':':  ':',
+  '{':  '{',
+  '}':  '}',
+  '(':  '(',
+  ')':  ')',
+  '\'': '\'',
+  '`':  '`',
+  '|':  '|',
+  '[':  '[',
+  ']':  ']',
+  '$':  '$ ',
+  '*':  '*',
+  '/':  '/',
+  '\\': '\\',
+  '<':  '<',
+  '>':  '>',
+  '=>': '=>',
+  'f':  'function ',
+  'c':  'const ',
+  'l':  'let ',
+};
 
 @Component({
   selector: 'app-root',
@@ -29,10 +35,13 @@ export class AppComponent implements OnInit {
   public consoleOutput: string;
   public hasStoredCode: boolean;
 
-  public keys: string[] = KEYS;
+  public keys: string[] = Object.keys(KEYS);
 
   @ViewChild('js')
   public jsTextArea: ElementRef;
+
+  // TODO extract textarea to separate component
+  // TODO tab and untab buttons, working with multi select
 
   private get textarea(): HTMLTextAreaElement {
     return this.jsTextArea.nativeElement;
@@ -68,7 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   public onKeypress(key: string): void {
-    this.insertText(key);
+    this.insertText(KEYS[key]);
 
     // TODO longpress for special alternatives? e.g. '->" or block for loop stuff
   }
@@ -120,7 +129,7 @@ export class AppComponent implements OnInit {
     const oldText = textarea.value;
     const textPre = oldText.substring(0, textarea.selectionStart);
     const textPost = oldText.substring(textarea.selectionEnd);
-    const selectionStart = textarea.selectionStart + 1;
+    const selectionStart = textarea.selectionStart + text.length;
     textarea.value = `${textPre}${text}${textPost}`;
     if (typeof caretPos !== 'undefined') {
       textarea.setSelectionRange(caretPos, caretPos);
