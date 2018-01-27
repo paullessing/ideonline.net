@@ -1,6 +1,16 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ConsoleCall, EvalResult, evalToConsole } from './eval';
 import * as download from 'downloadjs';
+
+export interface EvalResult {
+  error?: any;
+  consoleCalls: ConsoleCall[];
+  result?: any;
+}
+
+export interface ConsoleCall {
+  method: 'log' | 'info' | 'debug' | 'warn' | 'error';
+  args: any[];
+}
 
 export const KEYS = {
   ';':  ';',
@@ -74,23 +84,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.consoleOutput = 'Evaluating...';
 
     this.waitForFreshIframe()
-      .then((iframe) => {
-        this.isIframeFresh = false;
-        const evalResult = this.evalToConsole(iframe, code);
-        if (evalResult.error) {
-          this.consoleOutput = evalResult.error.toString();
-          this.isError = true;
-        } else if (evalResult.consoleCalls.length || typeof evalResult.result !== 'undefined') {
-          this.consoleOutput = evalResult.consoleCalls
-            .map((call) => [call.method.toUpperCase(), ...call.args
-              .map((arg: any) => this.stringify(arg))
-            ].join(' '))
-            .concat(typeof evalResult.result !== 'undefined' ? ['RETURN ' + this.stringify(evalResult.result)] : [])
-            .join('\n');
-        } else {
-          this.consoleOutput = 'No output';
-        }
-      })
+      .then((iframe) => this.runEval(iframe, code))
       .then(() => this.waitForFreshIframe());
   }
 
@@ -170,6 +164,24 @@ export class AppComponent implements OnInit, AfterViewInit {
       return value;
     } else {
       return JSON.stringify(value);
+    }
+  }
+
+  private runEval(iframe, code): void {
+    this.isIframeFresh = false;
+    const evalResult = this.evalToConsole(iframe, code);
+    if (evalResult.error) {
+      this.consoleOutput = evalResult.error.toString();
+      this.isError = true;
+    } else if (evalResult.consoleCalls.length || typeof evalResult.result !== 'undefined') {
+      this.consoleOutput = evalResult.consoleCalls
+        .map((call) => [call.method.toUpperCase(), ...call.args
+          .map((arg: any) => this.stringify(arg))
+        ].join(' '))
+        .concat(typeof evalResult.result !== 'undefined' ? ['RETURN ' + this.stringify(evalResult.result)] : [])
+        .join('\n');
+    } else {
+      this.consoleOutput = 'No output';
     }
   }
 
