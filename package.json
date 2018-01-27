@@ -13,7 +13,7 @@
     "ngsw-config": "ngsw-config dist src/ngsw-config.json",
     "ngsw-copy": "cp node_modules/@angular/service-worker/ngsw-worker.js dist/",
     "package-eval-script": "browserify src/eval.js > src/assets/eval/eval.js",
-    "build-prod": "rimraf dist && package-eval-script && ng build --prod && yarn run ngsw-config && yarn run ngsw-copy"
+    "build-prod": "rimraf dist && yarn package-eval-script && ng build --prod && yarn ngsw-config && yarn ngsw-copy"
   },
   "private": true,
   "dependencies": {
