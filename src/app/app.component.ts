@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { evalToConsole } from './eval';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ConsoleCall, EvalResult, evalToConsole } from './eval';
 import * as download from 'downloadjs';
 
 export const KEYS = {
@@ -31,7 +31,7 @@ export const KEYS = {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   public isError: boolean;
   public consoleOutput: string;
   public hasStoredCode: boolean;
@@ -41,9 +41,14 @@ export class AppComponent implements OnInit {
   @ViewChild('js')
   public jsTextArea: ElementRef;
 
+  @ViewChild('evalWindow')
+  public evalWindow: ElementRef;
+
   // TODO extract textarea to separate component
   // TODO tab and untab buttons, working with multi select
   // TODO navigation keys (up down left right)
+
+  private isIframeFresh: boolean;
 
   private get textarea(): HTMLTextAreaElement {
     return this.jsTextArea.nativeElement;
@@ -51,6 +56,10 @@ export class AppComponent implements OnInit {
 
   public ngOnInit(): void {
     this.hasStoredCode = !!localStorage.getItem('js');
+  }
+
+  public ngAfterViewInit(): void {
+    this.isIframeFresh = true;
   }
 
   public run(code: string): void {
@@ -62,20 +71,27 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    const evalResult = evalToConsole(code);
-    if (evalResult.error) {
-      this.consoleOutput = evalResult.error.toString();
-      this.isError = true;
-    } else if (evalResult.consoleCalls.length || typeof evalResult.result !== 'undefined') {
-      this.consoleOutput = evalResult.consoleCalls
-        .map((call) => [call.method.toUpperCase(), ...call.args
-          .map((arg: any) => this.stringify(arg))
-        ].join(' '))
-        .concat(typeof evalResult.result !== 'undefined' ? ['RETURN ' + this.stringify(evalResult.result)] : [])
-        .join('\n');
-    } else {
-      this.consoleOutput = 'No output';
-    }
+    this.consoleOutput = 'Evaluating...';
+
+    this.waitForFreshIframe()
+      .then((iframe) => {
+        this.isIframeFresh = false;
+        const evalResult = this.evalToConsole(iframe, code);
+        if (evalResult.error) {
+          this.consoleOutput = evalResult.error.toString();
+          this.isError = true;
+        } else if (evalResult.consoleCalls.length || typeof evalResult.result !== 'undefined') {
+          this.consoleOutput = evalResult.consoleCalls
+            .map((call) => [call.method.toUpperCase(), ...call.args
+              .map((arg: any) => this.stringify(arg))
+            ].join(' '))
+            .concat(typeof evalResult.result !== 'undefined' ? ['RETURN ' + this.stringify(evalResult.result)] : [])
+            .join('\n');
+        } else {
+          this.consoleOutput = 'No output';
+        }
+      })
+      .then(() => this.waitForFreshIframe());
   }
 
   public onKeypress(key: string): void {
@@ -154,6 +170,42 @@ export class AppComponent implements OnInit {
       return value;
     } else {
       return JSON.stringify(value);
+    }
+  }
+
+  private evalToConsole(iframe, code): EvalResult {
+    const callback = iframe.contentWindow['evalToConsole'];
+
+    try {
+      const [result, consoleCalls] = JSON.parse(callback(code)) as [any, ConsoleCall[]];
+      return {
+        result,
+        consoleCalls
+      };
+    } catch (error) {
+      return {
+        error,
+        consoleCalls: []
+      };
+    }
+  }
+
+  private refreshIframe(iframe: HTMLIFrameElement): Promise<HTMLIFrameElement> {
+    return new Promise<HTMLIFrameElement>((resolve) => {
+      iframe.onload = () => {
+        this.isIframeFresh = true;
+        resolve(iframe);
+      };
+      iframe.contentWindow.location.reload(true);
+    });
+  }
+
+  private waitForFreshIframe(): Promise<HTMLIFrameElement> {
+    const iframe = this.evalWindow.nativeElement as HTMLIFrameElement;
+    if (this.isIframeFresh) {
+      return Promise.resolve(iframe);
+    } else {
+      return this.refreshIframe(iframe);
     }
   }
 }
